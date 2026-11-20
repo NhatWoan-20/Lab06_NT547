@@ -1,0 +1,37 @@
+NT547 - LAB 06 - THÔNG TIN NỘP BÀI (GITHUB REPO, 4 ACTIONS RUN URL & 4 COMMIT SHA)
+===================================================================================
+MSSV: 22521203
+Họ và tên: Nguyễn Nhật Quang
+Lớp: NT547.R11.ANTT
+Session Code: SC-A99CC0
+Contract: TipJar_1203
+
+URL GitHub Repository:
+https://github.com/NhatWoan-20/Lab06_NT547
+
+-----------------------------------------------------------------------------------
+DANH SÁCH 4 TRẠNG THÁI CI/CD THEO THỨ TỰ (RED -> GREEN -> RED -> GREEN)
+-----------------------------------------------------------------------------------
+
+1. [RED] Baseline Vulnerable (Hợp đồng gốc chưa sửa lỗi)
+- Commit SHA: c0450e3d12136751bc23eff953b61112c4532d09
+- Short SHA : c0450e3
+- Action URL: https://github.com/NhatWoan-20/Lab06_NT547/actions/runs/44766819209/job/136393527892
+
+2. [GREEN] Patched (Sau khi Triage và sửa lỗi)
+- Commit SHA: e8012f8f40232fc5729850c4f523b9f0d5737c93
+- Short SHA : e8012f8
+- Action URL: https://github.com/NhatWoan-20/Lab06_NT547/actions/runs/44769462489
+
+3. [RED] Mutation (Cố ý tạo lỗi 1 dòng tx.origin -> Detector: tx-origin mức Medium)
+- Commit SHA: ae5d48db7fd88c8ec566e25aa6afa96e44a4b3f9
+- Short SHA : ae5d48d
+- Action URL: https://github.com/NhatWoan-20/Lab06_NT547/actions/runs/44775552172
+  (Ghi chú bổ sung commit thử nghiệm trong modifier onlyOwner:
+   Commit SHA: 648ea3313356359ec44af832db9dcc93f6271697
+   Action URL: https://github.com/NhatWoan-20/Lab06_NT547/actions/runs/44772390348)
+
+4. [GREEN] Revert Mutation (Khôi phục lại mã an toàn)
+- Commit SHA: 90e2ae92dff61c058b1780c0a215c94dd8f22afa
+- Short SHA : 90e2ae9
+- Action URL: https://github.com/NhatWoan-20/Lab06_NT547/actions/runs/44775929633
