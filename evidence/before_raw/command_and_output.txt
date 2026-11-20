@@ -1,0 +1,75 @@
+COMMAND: slither AuditTarget.sol --config-file config/slither.raw.json --fail-none --json evidence/before_raw/slither.json
+SLITHER_VERSION:
+0.11.6
+
+SOLC_VERSION:
+solc, the solidity compiler commandline interface
+Version: 0.8.24+commit.e11b9ed9.Linux.g++
+
+
+Detector: arbitrary-send-eth
+TipJar_1203.grant(address,uint256) (AuditTarget.sol#55-57) sends eth to arbitrary user
+	Dangerous calls:
+	- to.transfer(amount) (AuditTarget.sol#56)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+Detector: controlled-delegatecall
+TipJar_1203.proxyCall(address,bytes) (AuditTarget.sol#67-70) uses delegatecall to a input-controlled function id
+	- (ok,None) = target.delegatecall(data) (AuditTarget.sol#68)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#controlled-delegatecall
+
+Detector: reentrancy-eth
+Reentrancy in TipJar_1203.exitSafe() (AuditTarget.sol#48-53):
+	External calls:
+	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#50)
+	State variables written after the call(s):
+	- safeBalances[msg.sender] = 0 (AuditTarget.sol#52)
+	TipJar_1203.safeBalances (AuditTarget.sol#14) can be used in cross function reentrancies:
+	- TipJar_1203.depositSafe() (AuditTarget.sol#44-46)
+	- TipJar_1203.exitSafe() (AuditTarget.sol#48-53)
+	- TipJar_1203.safeBalances (AuditTarget.sol#14)
+Reentrancy in TipJar_1203.withdraw() (AuditTarget.sol#59-65):
+	External calls:
+	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#62)
+	State variables written after the call(s):
+	- deposits[msg.sender] = 0 (AuditTarget.sol#64)
+	TipJar_1203.deposits (AuditTarget.sol#12) can be used in cross function reentrancies:
+	- TipJar_1203.deposits (AuditTarget.sol#12)
+	- TipJar_1203.stake() (AuditTarget.sol#34-37)
+	- TipJar_1203.withdraw() (AuditTarget.sol#59-65)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Detector: incorrect-equality
+TipJar_1203.noFunds() (AuditTarget.sol#78-80) uses a dangerous strict equality:
+	- address(this).balance == 0 (AuditTarget.sol#79)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Detector: tx-origin
+TipJar_1203.setAdmin(address) (AuditTarget.sol#72-76) uses tx.origin for authorization: require(bool,string)(tx.origin == owner,not owner) (AuditTarget.sol#73)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-usage-of-txorigin
+
+Detector: missing-zero-check
+TipJar_1203.grant(address,uint256).to (AuditTarget.sol#55) lacks a zero-check on :
+		- to.transfer(amount) (AuditTarget.sol#56)
+TipJar_1203.proxyCall(address,bytes).target (AuditTarget.sol#67) lacks a zero-check on :
+		- (ok,None) = target.delegatecall(data) (AuditTarget.sol#68)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Detector: low-level-calls
+Low level call in TipJar_1203.ownerWithdraw(uint256) (AuditTarget.sol#39-42):
+	- (ok,None) = address(owner).call{value: amount}() (AuditTarget.sol#40)
+Low level call in TipJar_1203.exitSafe() (AuditTarget.sol#48-53):
+	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#50)
+Low level call in TipJar_1203.withdraw() (AuditTarget.sol#59-65):
+	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#62)
+Low level call in TipJar_1203.proxyCall(address,bytes) (AuditTarget.sol#67-70):
+	- (ok,None) = target.delegatecall(data) (AuditTarget.sol#68)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Detector: naming-convention
+Contract TipJar_1203 (AuditTarget.sol#10-81) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+AuditTarget.sol analyzed (2 contracts with 102 detectors), 13 result(s) found
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'solc --version' running
+'solc AuditTarget.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/mnt/c/Users/NhQu/Downloads/Lab06_SinhVien/Lab06_SinhVien' running
