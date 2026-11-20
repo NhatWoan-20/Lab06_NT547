@@ -1,0 +1,27 @@
+COMMAND: slither AuditTarget.sol --config-file config/slither.raw.json --fail-none --json evidence/after_raw/slither.json
+SLITHER_VERSION:
+0.11.6
+
+SOLC_VERSION:
+solc, the solidity compiler commandline interface
+Version: 0.8.24+commit.e11b9ed9.Linux.g++
+
+
+Detector: low-level-calls
+Low level call in TipJar_1203.ownerWithdraw(uint256) (AuditTarget.sol#40-43):
+	- (ok,None) = address(owner).call{value: amount}() (AuditTarget.sol#41)
+Low level call in TipJar_1203.exitSafe() (AuditTarget.sol#49-55):
+	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#53)
+Low level call in TipJar_1203.withdraw() (AuditTarget.sol#62-68):
+	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#66)
+Low level call in TipJar_1203.proxyCall(address,bytes) (AuditTarget.sol#70-74):
+	- (ok,None) = target.call(data) (AuditTarget.sol#72)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Detector: naming-convention
+Contract TipJar_1203 (AuditTarget.sol#10-87) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+AuditTarget.sol analyzed (2 contracts with 102 detectors), 5 result(s) found
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'solc --version' running
+'solc AuditTarget.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/mnt/c/Users/NhQu/Downloads/Lab06_SinhVien/Lab06_SinhVien' running

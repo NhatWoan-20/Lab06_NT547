@@ -1,0 +1,6 @@
+﻿index,check,impact,confidence,file,lines,description
+1,low-level-calls,Informational,High,AuditTarget.sol,"40,41,42,43; 41","Low level call in TipJar_1203.ownerWithdraw(uint256) (AuditTarget.sol#40-43): 	- (ok,None) = address(owner).call{value: amount}() (AuditTarget.sol#41)"
+2,low-level-calls,Informational,High,AuditTarget.sol,"49,50,51,52,53,54,55; 53","Low level call in TipJar_1203.exitSafe() (AuditTarget.sol#49-55): 	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#53)"
+3,low-level-calls,Informational,High,AuditTarget.sol,"62,63,64,65,66,67,68; 66","Low level call in TipJar_1203.withdraw() (AuditTarget.sol#62-68): 	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#66)"
+4,low-level-calls,Informational,High,AuditTarget.sol,"70,71,72,73,74; 72","Low level call in TipJar_1203.proxyCall(address,bytes) (AuditTarget.sol#70-74): 	- (ok,None) = target.call(data) (AuditTarget.sol#72)"
+5,naming-convention,Informational,High,AuditTarget.sol,"10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87",Contract TipJar_1203 (AuditTarget.sol#10-87) is not in CapWords

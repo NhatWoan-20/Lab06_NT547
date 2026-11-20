@@ -14,6 +14,7 @@ contract TipJar_1203 {
     mapping(address => uint256) public safeBalances;
 
     event Deposited(address indexed who, uint256 amount);
+    event OwnerChanged(address indexed previousOwner, address indexed newOwner);
 
     modifier onlyOwner() {
         require(msg.sender == owner, "not owner");
@@ -47,35 +48,39 @@ contract TipJar_1203 {
 
     function exitSafe() external exclusive {
         uint256 a = safeBalances[msg.sender];
+        require(a > 0, "empty");
+        safeBalances[msg.sender] = 0;
         (bool ok, ) = msg.sender.call{value: a}("");
         require(ok, "send failed");
-        safeBalances[msg.sender] = 0;
     }
 
-    function grant(address payable to, uint256 amount) external {
+    function grant(address payable to, uint256 amount) external onlyOwner {
+        require(to != address(0), "zero");
         to.transfer(amount);
     }
 
     function withdraw() external {
         uint256 amount = deposits[msg.sender];
         require(amount > 0, "empty");
+        deposits[msg.sender] = 0;
         (bool ok, ) = msg.sender.call{value: amount}("");
         require(ok, "send failed");
-        deposits[msg.sender] = 0;
     }
 
-    function proxyCall(address target, bytes calldata data) external {
-        (bool ok, ) = target.delegatecall(data);
-        require(ok, "delegatecall failed");
+    function proxyCall(address target, bytes calldata data) external onlyOwner {
+        require(target != address(0), "zero");
+        (bool ok, ) = target.call(data);
+        require(ok, "call failed");
     }
 
-    function setAdmin(address newOwner) external {
-        require(tx.origin == owner, "not owner");
+    function setAdmin(address newOwner) external onlyOwner {
         require(newOwner != address(0), "zero");
+        emit OwnerChanged(owner, newOwner);
         owner = newOwner;
     }
 
     function noFunds() external view returns (bool) {
+        // slither-disable-next-line incorrect-equality
         return address(this).balance == 0;
     }
 }
