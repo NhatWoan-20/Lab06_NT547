@@ -73,8 +73,7 @@ contract TipJar_1203 {
         require(ok, "call failed");
     }
 
-    function setAdmin(address newOwner) external {
-        require(tx.origin == owner, "not owner");
+    function setAdmin(address newOwner) external onlyOwner {
         require(newOwner != address(0), "zero");
         emit OwnerChanged(owner, newOwner);
         owner = newOwner;
